@@ -17,7 +17,8 @@ const screenshotPath = ssIdx !== -1 ? args[ssIdx + 1] : null;
 const pdfIdx = args.indexOf('--pdf');
 const pdfPath = pdfIdx !== -1 ? args[pdfIdx + 1] : null;
 
-const outputFile = args.find(a => !a.startsWith('http') && !a.startsWith('--') && a !== screenshotPath && a !== pdfPath);
+// Fix: Jangan cari outputFile kalau lagi mode visual (SS/PDF)
+const outputFile = (screenshotPath || pdfPath) ? null : args.find(a => !a.startsWith('http') && !a.startsWith('--'));
 
 if (!url) {
     console.log('\nUsage: kyscrape <url> [options] [filename]');
@@ -60,6 +61,7 @@ if (!url) {
         }
 
         console.log('\n' + '='.repeat(40));
+        console.log(`KyScrape v1.1.0`);
         console.log(`Engine Used : ${result.engine.toUpperCase()}`);
         console.log(`Status Code : ${result.status}`);
         console.log('='.repeat(40) + '\n');
