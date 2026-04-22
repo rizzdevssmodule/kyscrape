@@ -91,5 +91,3 @@ This project is licensed under the **MIT License**. Feel free to use it for pers
 ## 🤝 Contributing
 
 Contributions, issues, and feature requests are welcome! Feel free to check the [issues page]().
-
-Built with ❤️ by **Antigravity** and **The Community**.
