@@ -21,15 +21,19 @@ const pdfPath = pdfIdx !== -1 ? args[pdfIdx + 1] : null;
 const outputFile = (screenshotPath || pdfPath) ? null : args.find(a => !a.startsWith('http') && !a.startsWith('--'));
 
 if (!url) {
-    console.log('\nUsage: kyscrape <url> [options] [filename]');
+    const cmd = 'kyscrape';
+    const ex1 = 'https://example.com';
+    const ex2 = 'https://api.site.com';
+    
+    console.log(`\nUsage: ${cmd} <url> [options] [filename]`);
     console.log('\nOptions:');
     console.log('  --json           Output as JSON');
     console.log('  --ss <file>      Take a full-page screenshot');
     console.log('  --pdf <file>     Save page as PDF');
     console.log('\nExamples:');
-    console.log('  kyscrape https://example.com --ss result.png');
-    console.log('  kyscrape https://example.com --pdf doc.pdf');
-    console.log('  kyscrape https://api.site.com --json data.json\n');
+    console.log(`  ${cmd} ${ex1} --ss result.png`);
+    console.log(`  ${cmd} ${ex1} --pdf doc.pdf`);
+    console.log(`  ${cmd} ${ex2} --json data.json\n`);
     process.exit(1);
 }
 
@@ -61,7 +65,7 @@ if (!url) {
         }
 
         console.log('\n' + '='.repeat(40));
-        console.log(`KyScrape v1.1.0`);
+        console.log(`KyScrape v1.1.1`);
         console.log(`Engine Used : ${result.engine.toUpperCase()}`);
         console.log(`Status Code : ${result.status}`);
         console.log('='.repeat(40) + '\n');
