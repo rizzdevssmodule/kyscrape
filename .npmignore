@@ -1,0 +1,20 @@
+# Sampah Sistem & Editor
+node_modules/
+.DS_Store
+*.log
+.vscode/
+.idea/
+
+# File Gemini/Antigravity
+.gemini/
+.antigravity/
+brain/
+implementation_plan.md
+
+# File Pengembangan (Bisa dihapus jika ingin package super ringan, tapi biasanya dibiarkan)
+# test/
+# examples/
+
+# File Git
+.git/
+.gitignore
