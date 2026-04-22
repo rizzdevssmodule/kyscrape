@@ -3,6 +3,7 @@ const StealthEngine = require('./engines/stealth');
 const logger = require('./utils/logger');
 const { parallel } = require('./utils/concurrency');
 const cache = require('./utils/cache');
+const cheerio = require('cheerio');
 
 class KyScrape {
     constructor(options = {}) {
@@ -23,11 +24,18 @@ class KyScrape {
         }
 
         try {
+            // Jika user minta screenshot atau pdf, langsung pakai stealth
+            if (options.screenshot || options.pdf) {
+                const result = await this.stealthRequest(url, options);
+                cache.set(url, result);
+                return result;
+            }
+
             const response = await this.nitro.request(url, options);
 
             if ([403, 503, 429].includes(response.status) && this.options.autoStealth) {
                 logger.warn(`Nitro Engine blocked. Switching to Stealth...`);
-                const stealthResult = await this.stealthRequest(url);
+                const stealthResult = await this.stealthRequest(url, options);
                 cache.set(url, stealthResult);
                 return stealthResult;
             }
@@ -35,31 +43,31 @@ class KyScrape {
             const rawData = await response.text();
             const formatted = this._formatResponse('nitro', response.status, rawData);
             
-            // Save to cache
             cache.set(url, formatted);
-            
             return formatted;
 
         } catch (error) {
             if (this.options.autoStealth) {
                 logger.warn(`Nitro Engine error. Falling back to Stealth...`);
-                return await this.stealthRequest(url);
+                return await this.stealthRequest(url, options);
             }
             throw error;
         }
     }
 
-    async stealthRequest(url) {
-        const result = await this.stealth.request(url);
+    async stealthRequest(url, options = {}) {
+        const result = await this.stealth.request(url, options);
         return this._formatResponse('stealth', result.status, result.content, result.cookies);
     }
 
     _formatResponse(engine, status, data, cookies = []) {
+        const $ = cheerio.load(data);
         return {
             engine,
             status,
             data,
             cookies,
+            $, // Built-in Cheerio
             text: () => data,
             json: () => JSON.parse(data),
             toString: () => data
@@ -82,6 +90,20 @@ const kyscrape = async (url, options = {}) => {
 kyscrape.Core = KyScrape;
 kyscrape.instance = defaultInstance;
 kyscrape.close = () => defaultInstance.close();
+
+/**
+ * Screenshot convenience method
+ */
+kyscrape.screenshot = (url, path, options = {}) => {
+    return kyscrape(url, { ...options, screenshot: path });
+};
+
+/**
+ * PDF convenience method
+ */
+kyscrape.pdf = (url, path, options = {}) => {
+    return kyscrape(url, { ...options, pdf: path });
+};
 
 /**
  * Mass scraping with concurrency control

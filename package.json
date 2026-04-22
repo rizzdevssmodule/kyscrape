@@ -1,6 +1,6 @@
 {
   "name": "kyscrape",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "High-performance, stealthy web scraping module with Nitro TLS and Adaptive Engine.",
   "main": "src/index.js",
   "bin": {
@@ -41,6 +41,7 @@
     "playwright-extra": "^4.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
     "user-agents": "^1.1.130",
-    "chalk": "^4.1.2"
+    "chalk": "^4.1.2",
+    "cheerio": "^1.0.0-rc.12"
   }
 }

@@ -1,6 +1,6 @@
 # 🚀 KyScrape
 
-[![NPM Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://www.npmjs.com/)
+[![NPM Version](https://img.shields.io/badge/version-1.0.6-blue.svg)](https://www.npmjs.com/package/kyscrape)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Engine: Nitro](https://img.shields.io/badge/Engine-Nitro--TLS-cyan.svg)]()
 [![Stealth: Enabled](https://img.shields.io/badge/Stealth-Active-magenta.svg)]()
@@ -42,15 +42,16 @@ npm install kyscrape
 const kyscrape = require('kyscrape');
 
 (async () => {
-    // 1. Just fetch data
-    const response = await kyscrape('https://example.com');
-    console.log(response.text());
+    // 1. Scraping & Parsing with Built-in Cheerio ($)
+    const { $, engine } = await kyscrape('https://example.com');
+    console.log($('h1').text()); // Easy jQuery-like syntax!
 
-    // 2. Or destructure for more control
-    const { data, engine, json } = await kyscrape('https://api.site.com/data');
-    console.log(`Bypassed using ${engine} engine`);
+    // 2. Take a full-page Screenshot
+    await kyscrape.screenshot('https://google.com', 'google.png');
+
+    // 3. Generate a PDF of the page
+    await kyscrape.pdf('https://wikipedia.org', 'wiki.pdf');
     
-    // Always close sessions when done
     await kyscrape.close();
 })();
 ```
