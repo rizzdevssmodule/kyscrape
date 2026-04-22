@@ -65,7 +65,7 @@ if (!url) {
         }
 
         console.log('\n' + '='.repeat(40));
-        console.log(`KyScrape v1.1.1`);
+        console.log(`KyScrape v1.1.2`);
         console.log(`Engine Used : ${result.engine.toUpperCase()}`);
         console.log(`Status Code : ${result.status}`);
         console.log('='.repeat(40) + '\n');

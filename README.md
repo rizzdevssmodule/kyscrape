@@ -1,6 +1,6 @@
 # 🚀 KyScrape
 
-[![NPM Version](https://img.shields.io/badge/version-1.1.1-blue.svg)](https://www.npmjs.com/package/kyscrape)
+[![NPM Version](https://img.shields.io/badge/version-1.1.2-blue.svg)](https://www.npmjs.com/package/kyscrape)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Engine: Nitro](https://img.shields.io/badge/Engine-Nitro--TLS-cyan.svg)]()
 [![Stealth: Enabled](https://img.shields.io/badge/Stealth-Active-magenta.svg)]()
@@ -44,6 +44,7 @@ const kyscrape = require('kyscrape');
 (async () => {
     // 1. Scraping & Parsing with Built-in Cheerio ($)
     const { $, engine } = await kyscrape('https://example.com');
+    console.log(`KyScrape v1.1.2`);
     console.log($('h1').text()); // Easy jQuery-like syntax!
 
     // 2. Take a full-page Screenshot
