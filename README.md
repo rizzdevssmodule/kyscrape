@@ -1,6 +1,6 @@
 # 🚀 KyScrape
 
-[![NPM Version](https://img.shields.io/badge/version-1.0.6-blue.svg)](https://www.npmjs.com/package/kyscrape)
+[![NPM Version](https://img.shields.io/badge/version-1.0.7-blue.svg)](https://www.npmjs.com/package/kyscrape)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Engine: Nitro](https://img.shields.io/badge/Engine-Nitro--TLS-cyan.svg)]()
 [![Stealth: Enabled](https://img.shields.io/badge/Stealth-Active-magenta.svg)]()
