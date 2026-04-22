@@ -9,17 +9,26 @@ const args = process.argv.slice(2);
 const url = args.find(a => a.startsWith('http'));
 const isJson = args.includes('--json');
 const isHtml = args.includes('--html');
-const outputFile = args.find(a => !a.startsWith('http') && !a.startsWith('--'));
+
+// Visual Flags
+const ssIdx = args.indexOf('--ss');
+const screenshotPath = ssIdx !== -1 ? args[ssIdx + 1] : null;
+
+const pdfIdx = args.indexOf('--pdf');
+const pdfPath = pdfIdx !== -1 ? args[pdfIdx + 1] : null;
+
+const outputFile = args.find(a => !a.startsWith('http') && !a.startsWith('--') && a !== screenshotPath && a !== pdfPath);
 
 if (!url) {
     console.log('\nUsage: kyscrape <url> [options] [filename]');
     console.log('\nOptions:');
-    console.log('  --json    Output as JSON');
-    console.log('  --html    Output as HTML (default)');
+    console.log('  --json           Output as JSON');
+    console.log('  --ss <file>      Take a full-page screenshot');
+    console.log('  --pdf <file>     Save page as PDF');
     console.log('\nExamples:');
-    console.log('  kyscrape https://api.com/data --json');
-    console.log('  kyscrape https://site.com result.html');
-    console.log('  kyscrape https://api.com/data --json data.json\n');
+    console.log('  kyscrape https://example.com --ss result.png');
+    console.log('  kyscrape https://example.com --pdf doc.pdf');
+    console.log('  kyscrape https://api.site.com --json data.json\n');
     process.exit(1);
 }
 
@@ -27,42 +36,40 @@ if (!url) {
     logger.info(`Starting KyScrape for: ${url}`);
 
     try {
-        const result = await kyscrape(url);
+        let result;
+
+        if (screenshotPath) {
+            logger.info('Capturing Screenshot...');
+            result = await kyscrape.screenshot(url, screenshotPath);
+        } else if (pdfPath) {
+            logger.info('Generating PDF...');
+            result = await kyscrape.pdf(url, pdfPath);
+        } else {
+            result = await kyscrape(url);
+        }
 
         let finalData = result.data;
         let displayData = '';
 
-        // Handle JSON Mode
         if (isJson) {
             try {
                 finalData = JSON.stringify(result.json(), null, 2);
-                displayData = finalData;
             } catch (e) {
                 logger.warn('Failed to parse as JSON, falling back to raw data.');
-                displayData = finalData;
             }
-        } else {
-            displayData = finalData.substring(0, 500) + '...';
         }
 
         console.log('\n' + '='.repeat(40));
         console.log(`Engine Used : ${result.engine.toUpperCase()}`);
         console.log(`Status Code : ${result.status}`);
-        console.log(`Format      : ${isJson ? 'JSON' : 'HTML'}`);
         console.log('='.repeat(40) + '\n');
 
-        // Jika user minta output ke terminal (raw)
-        if (!outputFile) {
-            console.log(finalData); // Print FULL data to console if no file specified
-            console.log('\n' + '-'.repeat(40));
-            logger.info('Tip: Add a filename to save the output: kyscrape <url> output.txt');
-        } 
-        
-        // Jika user minta simpan ke file
         if (outputFile) {
             const fullPath = path.resolve(process.cwd(), outputFile);
             fs.writeFileSync(fullPath, finalData);
             logger.success(`Output saved to: ${fullPath}`);
+        } else if (!screenshotPath && !pdfPath) {
+            console.log(finalData);
         }
 
     } catch (err) {

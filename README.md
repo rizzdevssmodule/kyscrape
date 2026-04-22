@@ -1,6 +1,6 @@
 # 🚀 KyScrape
 
-[![NPM Version](https://img.shields.io/badge/version-1.0.7-blue.svg)](https://www.npmjs.com/package/kyscrape)
+[![NPM Version](https://img.shields.io/badge/version-1.0.8-blue.svg)](https://www.npmjs.com/package/kyscrape)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Engine: Nitro](https://img.shields.io/badge/Engine-Nitro--TLS-cyan.svg)]()
 [![Stealth: Enabled](https://img.shields.io/badge/Stealth-Active-magenta.svg)]()
@@ -67,7 +67,13 @@ npm install -g .
 # Simple request
 kyscrape https://example.com
 
-# Save to file
+# Take a screenshot
+kyscrape https://example.com --ss result.png
+
+# Save as PDF
+kyscrape https://example.com --pdf doc.pdf
+
+# Save data to file
 kyscrape https://example.com output.html
 ```
 
