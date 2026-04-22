@@ -1,6 +1,6 @@
 {
   "name": "kyscrape",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "High-performance, stealthy web scraping module with Nitro TLS and Adaptive Engine.",
   "main": "src/index.js",
   "bin": {
